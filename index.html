@@ -92,10 +92,10 @@
       <div class="col-md-8" style="font-size:18px;">
         <h2>Project Objective:</h2>
         <ul>
-          <li>some important objectives.some important objectives.some important objectives.some important objectives.
+          <li>- Develop modular code that can be used for multiple LED keypads
           </li>
-          <li>some other important objectives.</li>
-          <li>some not-that-important objectives.</li>
+          <li>- Create a 3D printed enclosure for our embedded system</li>
+          <li>- Replicate Minesweeper in a physical form</li>
         </ul>
       </div>
     </div>
@@ -104,14 +104,34 @@
 
     <div style="text-align:center;">
       <h2>Design</h2>
-      <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
-        lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim
-        posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec
-        est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum
-        pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla
-        lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec
-        ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim
-        feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.
+      <p style="text-align: left;padding: 0px 30px;">We created our game all in one Python file, with a separate file
+        containing the winning scores of the game. Our game began by randomly placing the mines throughout the board.
+        Depending on the difficulty selected using the PiTFT buttons, which would be easy by default, either 10, 15, or
+        20 mines were placed throughout the board.<br><br>
+
+        With the difficulty established, we went through all of the other squares to determine how many surrounding
+        mines there were. To do this, we had a grid for the whole board, and we checked all the surround (x,y)
+        coordinates of a given square to determine its sum of mines.<br><br>
+
+        Once the board was generated, the game would start with all the squares lit up in white, to indicate everything
+        as unrevealed. There were two types of presses, a long and short press. A short press would reveal an unrevealed
+        square, and depending on the sum of mines around that unrevealed square, there would be a color to indicate how
+        many mines were around it. For one mine, it was blue, for two it was green, for three it was red, and for four
+        it was purple. If the unrevealed square turned out to be a mine, revealing it would flash all the mines on the
+        board to indicate that the player lost. However, if the player had revealed a mine on the first try of the whole
+        game, our board regenerated to a different board where that given square was clear. This prevented the player
+        from instantly losing, and thus made our game more enjoyable.<br><br>
+
+        A longer press flagged a square, and was indicated by a flashing white light. Once a square is flagged, it
+        cannot be uncovered by a short press until it is unflagged. It is useful for the player to keep track of where
+        all the mines are. The amount of flags a player could use was equal to the amount of mines on the board, which
+        they could keep track of using the numeric display in the top left corner of the system.<br><br>
+
+        The numeric display in the top right corner of our system displayed the time. If the player uncovered all the
+        squares that didn’t contain mines, they won, and their time was added to our leaderboard file along with the
+        difficulty. Our PiTFT displayed these scores, filtering through the leaderboard file to only display times from
+        the current difficulty. The first, second, and third place scores were displayed as gold, silver, and bronze
+        respectively.
       </p>
     </div>
 
@@ -119,14 +139,7 @@
 
     <div style="text-align:center;">
       <h2>Drawings</h2>
-      <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
-        lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim
-        posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec
-        est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum
-        pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla
-        lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec
-        ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim
-        feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.
+      <p style="text-align: left;padding: 0px 30px;"> CAD drawings?
       </p>
     </div>
 
