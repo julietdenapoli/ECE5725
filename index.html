@@ -145,7 +145,65 @@
         correct number of mines for that level of difficulty. <br><br>
       </p>
       <p style="text-align: left;padding: 0px 30px; font-size:20px">Hardware</p>
-      <p style="text-align: left;padding: 0px 30px;"></p>
+      <p style="text-align: left;padding: 0px 30px;"> In order to display the typical grid of Minesweeper, we used four
+        4x4 button and LED combination circuit boards from Adafruit. These boards can display any RGB color, and the
+        physical buttons are made of durable and transparent silicone. The boards are communicated with via I2C. Each
+        board has five unique address changing soldering points that allowed us to use four in combination. This extra
+        capacity would also allow us to further expand this project given a larger budget. These boards also have an
+        interrupt pin that is used to trigger an interrupt service routine on the Raspberry Pi to ensure a rapid
+        response to any button press.<br><br>
+
+        Displaying the timer and mine counter was handled by two sets of four digit 7-segment display boards from
+        Adafruit. These boards also communicated over I2C, and they had two address changing solder points. These
+        displays were wired directly into the same I2C wires as the LED boards resulting in only five wires needing to
+        be connected to the Raspberry Pi: 3V, GND, SDA, SCL, and one interrupt pin from the LED boards.<br><br>
+
+        The arcade style button used a typical button microswitch given to us by Professor Skovira. This switch was
+        wired to be a default low button in order to use the lowest amount of current.<br><br>
+
+        The non-electronic hardware design stemmed largely from our initial concept drawing seen in Figure 1. This
+        initial design sketch was made using rough measurements of all the components used, but it was merely an initial
+        design idea. As we progressed, the design was segmented into distinct components due to the limitations of 3D
+        printing bed sizes, and the design was also brought into three dimensions to resemble an arcade machine.<br><br>
+
+        The first piece printed was the main body holding the four LED button grids and the two sets of 7-segment
+        displays on the top. This piece took five drafts to get to be the perfect shape as the buttons needed just
+        enough room to be pressed while also being structurally supportive. This component was also designed to house
+        the 7-segment displays shown at the top of Figure 1. These displays needed to be perfectly flush with the front
+        of the display while leaving room behind for their control boards and breakout pins. We also included two
+        cylindrical mounting points components that can be seen in the bottom of Figure 2 that the piece holding the
+        PiTFT and arcade style button would later mount to.<br><br>
+
+        In order to retain the 4x4 LED matrix circuit boards together and in place, we had to design a custom solution.
+        The circuit boards needed to be supported from the rear, but there was limited area from which they could be due
+        to various resistors and capacitor placements. In order to fully support the LED circuit boards enough to
+        withstand constant use from players, we used an I-beam style support that pressed against every corner of the
+        circuit boards. We left gaps in the supports along each side of the circuit boards so that wires could be run
+        from the 7-segment displays down to the Raspberry Pi.. We then used a small tab based alignment method to ensure
+        that the support structure was in the correct position while gluing which can be seen in Figure 3. We also
+        selected the I-beam style support due to its lower plastic volume than a more blocky style.<br><br>
+
+        The bottommost part of the hardware design housed the Raspberry Pi, PiTFT, and arcade style button. The PiTFT
+        was difficult to constrain in all directions for several reasons. The first was that the premade mounting holes
+        are so small that 3D printed parts lack much strength at that size. The second is that the Raspberry Pi and
+        PiTFT display are not exactly parallel, and this creates some difficult dimensions to measure. In order to get
+        around the first issue we printed many drafts to find the exact maximum radius we could get away with, and we
+        also used the port housing portion of the Raspberry Pi as an additional constraint. This cutout can be seen in
+        the bottom right of Figure 4. In order to resolve the second issue, we used rubber foam sandwiched between the
+        Raspberry Pi and the back of the housing to press the assembly against the front and thus constrain it
+        depth-wise. We also had to make some small design modifications to accommodate some pins and pieces of solder on
+        the PiTFT that can be seen in Figure 4. At the top of the figure below you can also see the cutout for the
+        wiring between the two main bodies.<br><br>
+
+        All remaining pieces of the final assembly were aesthetic only. This includes the “Pi Sweeper” name plate seen
+        at the top of Figure 5 and the rear piece of the main body. We also printed our names as the structural supports
+        of the two legs, and this can be partially seen below as well.<br><br>
+
+        The arcade style button needed to be redesigned to fit within the tight depth constraints of its housing. The
+        design was adapted from an open source design by Thingiverse user Wattage2308, and we only modified the inner
+        radius of the outermost part to facilitate a more smooth button pressing motion. See the references section for
+        the credited design and download link.<br><br>
+      </p>
     </div>
 
     <hr id='drawings'>
