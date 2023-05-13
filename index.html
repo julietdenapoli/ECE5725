@@ -223,6 +223,8 @@
         <img class="img-rounded" src="pics/cad2.jpg" alt="Generic placeholder image" width="240" height="320">
         <h4>Figure 4: Rear view of the PiTFT and arcade style button housing showing the four mounting pins, cutout for
           the Raspberry Pi ports, and cutouts for the PiTFT buttons.</h4>
+        <img class="img-rounded" src="pics/testing.jpg" alt="Generic placeholder image" width="240" height="320">
+        <h4>Figure 5: Preliminary testing.</h4>
       </div>
       </p>
     </div>
@@ -232,7 +234,20 @@
     <div style="text-align:center;">
       <h2>Testing</h2>
       <p style="text-align: left;padding: 0px 30px;">When we first received our parts, none of the NeoTrellis LED
-        keypads were connected yet, so we began by testing our board generation on one 4x4 NeoTrellis board.
+        keypads were connected yet, so we began by testing our board generation on one 4x4 NeoTrellis board. This was a
+        matter of creating a grid as our gameboard, randomly placing a few mines within this grid, and computing the
+        surrounding mines for all the clear squares. This initial setup can be seen in Figure 5. When it came time to
+        add more NeoTrellis boards, it was just a matter of changing the x and y dimensions of our game board, as well
+        as adding the new NeoTrellis board to our array of boards. <br><br>
+
+        After this first draft, we were able to connect all the NeoTrellis boards, as well as connect the numeric
+        displays. This can be seen in Figure 6. From here, we implemented board clearing, flagging, as well as the flag
+        and time display on the numeric LEDs.<br><br>
+
+        With all of this done, we added the bottom component of our system, which had the PiTFT and the reset button. We
+        implemented how the reset button would implement the game, and how each of the different difficulty buttons on
+        the PiTFT would reset the game with its respective. From there, the last part to complete was the leaderboard to
+        be displayed on the PiTFT.
       </p>
       <img class="img-rounded" src="pics/testing.jpg" alt="Generic placeholder image" width="240" height="340">
     </div>
@@ -286,7 +301,7 @@
           <li>Adafruit 0.54" Quad Alphanumeric FeatherWing Display - Red - $9.95 each (need 2)</li>
         </a>
       </ul>
-      <h3>Total: $89.70</h3>
+      <h3>Total: $124.70</h3>
     </div>
     <hr>
     <div style="font-size:18px">
