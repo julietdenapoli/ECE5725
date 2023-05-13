@@ -77,9 +77,13 @@
 
     <div style="text-align:center;">
       <h2>Introduction</h2>
-      <p style="text-align: left;padding: 0px 30px;"> For our final project, we wanted to create a physical version of
-        the classic game Minesweeper. Using 4 4x4 LED button boards, as well as some 3D printed encapsulations, we
-        created an arcade style game for our final project.
+      <p style="text-align: left;padding: 0px 30px;"> This project is be a physical rendition of the classic Minesweeper
+        video game, using a hardware game board where squares can be uncovered by pressing them directly. There is an
+        8x8 grid, with each grid square illuminated from within by a colored RGB LED to display the nearby mine count,
+        undiscovered status, flag, or location of mine when the game is lost. The player is able to push the grid
+        squares down to explore that space, with other open squares automatically being revealed like auto-exploration
+        in the traditional Minesweeper game. The Raspberry Pi and all hardware are enclosed in a custom 3D printed
+        chassis, and the PiTFT would display a live leaderboard.
       </p>
     </div>
 
@@ -251,7 +255,7 @@
         the PiTFT would reset the game with its respective. From there, the last part to complete was the leaderboard to
         be displayed on the PiTFT.
       </p>
-      <img class="img-rounded" src="pics/testing.jpg" alt="Generic placeholder image" width="240" height="340">
+
     </div>
 
     <hr id='result'>
@@ -263,7 +267,12 @@
         purchased behaved exactly as we expected, and integration was smooth due to the ease of I2C on the Raspberry Pi.
         We ended up slightly changing our chassis design as we went to create a better user experience when playing the
         game. The game looked and played as well as we could have hoped despite limitations of only having LEDs as the
-        display.</p>
+        display. <br><br>
+
+        In the future, we could expand upon our game to create an even bigger board. Luckily, with the way we developed
+        our code to be modular, adding more boards wouldn’t be difficult. As of right now, our hard difficulty is just a
+        little too difficult, but that is only because it is on an 8x8 grid. In the online version of Minesweeper,
+        different difficulties come with different sized boards.</p>
     </div>
 
     <hr>
