@@ -104,35 +104,48 @@
 
     <div style="text-align:center;">
       <h2>Design</h2>
+      <p style="text-align: left;padding: 0px 30px; font-size:20px">Software</p>
       <p style="text-align: left;padding: 0px 30px;">We created our game all in one Python file, with a separate file
         containing the winning scores of the game. Our game began by randomly placing the mines throughout the board.
         Depending on the difficulty selected using the PiTFT buttons, which would be easy by default, either 10, 15, or
-        20 mines were placed throughout the board.<br><br>
+        20 mines were placed throughout the board. <br><br>
+
 
         With the difficulty established, we went through all of the other squares to determine how many surrounding
-        mines there were. To do this, we had a grid for the whole board, and we checked all the surround (x,y)
-        coordinates of a given square to determine its sum of mines.<br><br>
+        mines there were for the clear squares. To do this, we had a grid for the whole board, and we checked all the
+        surround (x,y) coordinates of a given square to determine its sum of mines. <br><br>
+
 
         Once the board was generated, the game would start with all the squares lit up in white, to indicate everything
         as unrevealed. There were two types of presses, a long and short press. A short press would reveal an unrevealed
         square, and depending on the sum of mines around that unrevealed square, there would be a color to indicate how
-        many mines were around it. For one mine, it was blue, for two it was green, for three it was red, and for four
-        it was purple. If the unrevealed square turned out to be a mine, revealing it would flash all the mines on the
-        board to indicate that the player lost. However, if the player had revealed a mine on the first try of the whole
-        game, our board regenerated to a different board where that given square was clear. This prevented the player
-        from instantly losing, and thus made our game more enjoyable.<br><br>
+        many mines were around it. For one mine, it was blue, for two it was green, for three it was red, for four it
+        was purple, and for five it was yellow. If the unrevealed square turned out to be a mine, revealing it would
+        flash all the mines on the board to indicate that the player lost. However, if the player had revealed a mine on
+        the first try of the whole game, our board regenerated to a different board where that given square was clear.
+        This prevented the player from instantly losing, and thus made our game more enjoyable.<br><br>
+
 
         A longer press flagged a square, and was indicated by a flashing white light. Once a square is flagged, it
         cannot be uncovered by a short press until it is unflagged. It is useful for the player to keep track of where
         all the mines are. The amount of flags a player could use was equal to the amount of mines on the board, which
-        they could keep track of using the numeric display in the top left corner of the system.<br><br>
+        they could keep track of using the numeric display in the top left corner of the system. <br><br>
+
 
         The numeric display in the top right corner of our system displayed the time. If the player uncovered all the
         squares that didn’t contain mines, they won, and their time was added to our leaderboard file along with the
         difficulty. Our PiTFT displayed these scores, filtering through the leaderboard file to only display times from
         the current difficulty. The first, second, and third place scores were displayed as gold, silver, and bronze
-        respectively.
+        respectively. <br><br>
+
+        After winning or losing a game, or if the player wanted to play a new game at any point, they could reset the
+        game at the current difficulty using the red button in the lower left corner. Alternatively, they could also
+        reset the game with the difficulty buttons in case they wanted to play at a different mode. Resetting the game
+        in both cases turned all the squares to unrevealed, reset the time, and also regenerated the board with the
+        correct number of mines for that level of difficulty. <br><br>
       </p>
+      <p style="text-align: left;padding: 0px 30px; font-size:20px">Hardware</p>
+      <p style="text-align: left;padding: 0px 30px;"></p>
     </div>
 
     <hr id='drawings'>
@@ -143,7 +156,7 @@
       <h2>Drawings</h2>
       <div style="text-align:center;">
         <img class="img-rounded" src="pics/sketch.jpg" alt="Generic placeholder image" width="240" height="320">
-        <h4>Project group picture</h4>
+        <h4>Initial Design</h4>
       </div>
       </p>
     </div>
@@ -182,20 +195,19 @@
 
     <div class="row" style="text-align:center;">
       <h2>Work Distribution</h2>
-      <div style="text-align:center;">
-        <img class="img-rounded" src="pics/group.jpg" alt="Generic placeholder image" style="width:80%;">
-        <h4>Project group picture</h4>
+      <div class="col-md-4" style="font-size:16px">
+        <h3>Changyuan</h3>
+        <p class="lead">cl859@cornell.edu</p>
+        <p>Tested the overall system.
       </div>
-      <div class="col-md-6" style="font-size:16px">
-        <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="240">
-        <h3>Rick</h3>
-        <p class="lead">netid@cornell.edu</p>
-        <p>Designed the overall software architecture (Just being himself).
+      <div class="col-md-4" style="font-size:16px">
+        <h3>Juliet</h3>
+        <p class="lead">jfd232@cornell.edu</p>
+        <p>Tested the overall system.
       </div>
-      <div class="col-md-6" style="font-size:16px">
-        <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="240">
-        <h3>Morty</h3>
-        <p class="lead">netid@cornell.edu</p>
+      <div class="col-md-4" style="font-size:16px">
+        <h3>Owen</h3>
+        <p class="lead">ocl6@cornell.edu</p>
         <p>Tested the overall system.
       </div>
     </div>
@@ -220,10 +232,9 @@
     <hr>
     <div style="font-size:18px">
       <h2>References</h2>
-      <a href="https://picamera.readthedocs.io/">PiCamera Document</a><br>
-      <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
-      <a href="http://getbootstrap.com/">Bootstrap</a><br>
-      <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
+      <a href="https://learn.adafruit.com/adafruit-neotrellis">Adafruit NeoTrellis Tutorial</a><br>
+      <a href="https://learn.adafruit.com/14-segment-alpha-numeric-led-featherwing">Adafruit Alphanumeric LED Display
+        Tutorial</a><br>
       <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
 
     </div>
