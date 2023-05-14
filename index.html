@@ -65,7 +65,7 @@
 
     <hr>
     <div class="center-block">
-      <iframe width="640" height="360" src="https://www.youtube.com/embed/GuM8vTq0jd4" allowfullscreen>
+      <iframe style="border: 0;" width="640" height="360" src="https://www.youtube.com/embed/GuM8vTq0jd4" allowfullscreen>
       </iframe>
       <h4 style="text-align:center;">Demonstration Video</h4>
     </div>
@@ -74,13 +74,14 @@
 
     <div style="text-align:center;">
       <h2>Introduction</h2>
-      <p style="text-align: left;padding: 0px 30px;"> This project is be a physical rendition of the classic Minesweeper
-        video game, using a hardware game board where squares can be uncovered by pressing them directly. There is an
-        8x8 grid, with each grid square illuminated from within by a colored RGB LED to display the nearby mine count,
-        undiscovered status, flag, or location of mine when the game is lost. The player is able to push the grid
-        squares down to explore that space, with other open squares automatically being revealed like auto-exploration
-        in the traditional Minesweeper game. The Raspberry Pi and all hardware are enclosed in a custom 3D printed
-        chassis, and the PiTFT would display a live leaderboard.
+      <p style="text-align: left;padding: 0px 30px;">
+        This project is a physical rendition of the classic Minesweeper video game, using a hardware game board where
+        squares can be uncovered by pressing them directly. There is an 8x8 grid, with each grid square illuminated
+        from within by a colored RGB LED to display the nearby mine count, undiscovered status, flag, or location of
+        mine when the game is lost. The player is able to push the grid squares down to explore that space, with other
+        open squares automatically being revealed like how auto-exploration works in the traditional Minesweeper game.
+        The Raspberry Pi and all hardware are enclosed in a custom 3D printed chassis, and the PiTFT displays a
+        leaderboard with previous best times, filtered by difficulty.
       </p>
     </div>
 
@@ -88,15 +89,14 @@
 
     <div class="row">
       <div class="col-md-4" style="text-align:center;">
-        <img class="img-rounded" src="pics/description.jpg" alt="Generic placeholder image" width="240" height="240">
+        <img class="img-rounded" src="pics/description.jpg" alt="Project" width="240" height="240">
       </div>
       <div class="col-md-8" style="font-size:18px;">
         <h2>Project Objective:</h2>
         <ul>
-          <li>Develop modular code that can be used for multiple NeoTrellis LED keypads
-          </li>
-          <li>Create a 3D printed enclosure for our embedded system</li>
           <li>Replicate Minesweeper in a physical form</li>
+          <li>Develop modular code that can be used for multiple NeoTrellis LED keypads</li>
+          <li>Create a 3D printed enclosure for our embedded system</li>
         </ul>
       </div>
     </div>
@@ -105,85 +105,113 @@
 
     <div style="text-align:center;">
       <h2>Design</h2>
-      <p style="text-align: left;padding: 0px 30px; font-size:20px">Software</p>
-      <p style="text-align: left;padding: 0px 30px;">We created our game all in one Python file, with a separate file
-        containing the winning scores of the game. Our game began by randomly placing the mines throughout the board.
-        Depending on the difficulty selected using the PiTFT buttons, which would be easy by default, either 10, 15, or
-        20 mines were placed throughout the board. <br><br>
-
-
-        With the difficulty established, we went through all of the other squares to determine how many surrounding
-        mines there were for the clear squares. To do this, we had a grid for the whole board, and we checked all the
-        surround (x,y) coordinates of a given square to determine its sum of mines. <br><br>
-
-
-        Once the board was generated, the game would start with all the squares lit up in white, to indicate everything
-        as unrevealed. There were two types of presses, a long and short press. A short press would reveal an unrevealed
-        square, and depending on the sum of mines around that unrevealed square, there would be a color to indicate how
-        many mines were around it. For one mine, it was blue, for two it was green, for three it was red, for four it
-        was purple, and for five it was yellow. If the unrevealed square turned out to be a mine, revealing it would
-        flash all the mines on the board to indicate that the player lost. However, if the player had revealed a mine on
-        the first try of the whole game, our board regenerated to a different board where that given square was clear.
-        This prevented the player from instantly losing, and thus made our game more enjoyable.<br><br>
-
-
-        A longer press flagged a square, and was indicated by a flashing white light. Once a square is flagged, it
-        cannot be uncovered by a short press until it is unflagged. It is useful for the player to keep track of where
-        all the mines are. The amount of flags a player could use was equal to the amount of mines on the board, which
-        they could keep track of using the numeric display in the top left corner of the system. <br><br>
-
-
-        The numeric display in the top right corner of our system displayed the time. If the player uncovered all the
-        squares that didn’t contain mines, they won, and their time was added to our leaderboard file along with the
-        difficulty. Our PiTFT displayed these scores, filtering through the leaderboard file to only display times from
-        the current difficulty. The first, second, and third place scores were displayed as gold, silver, and bronze
-        respectively. <br><br>
-
-        After winning or losing a game, or if the player wanted to play a new game at any point, they could reset the
-        game at the current difficulty using the red button in the lower left corner. Alternatively, they could also
-        reset the game with the difficulty buttons in case they wanted to play at a different mode. Resetting the game
-        in both cases turned all the squares to unrevealed, reset the time, and also regenerated the board with the
-        correct number of mines for that level of difficulty. <br><br>
+      <h3 style="text-align: left;padding: 0px 30px; font-size:20px">Software</h3>
+      <p style="text-align: left;padding: 0px 30px;">
+        The game was controlled using a Python program, with separate files for the leaderboard and saved game replay,
+        containing the winning scores of the game and moves, seed, and difficulty for the most recently played game.
+        Our game begins by randomly placing the mines throughout the board. The number of mines depends on the
+        difficulty selected using the PiTFT buttons. 10 mines are placed at the default "easy" difficulty, but the
+        player can choose to play medium (15 mines) or hard (20 mines). During initialization, the game computed the
+        colors of all squares by looping through them and looking at the number of mines in adjacent grid squares. This
+        saved computation time during gameplay, since the colors are known in advance but only revealed when the grid
+        square is uncovered.
       </p>
-      <p style="text-align: left;padding: 0px 30px; font-size:20px">Hardware</p>
+      <p style="text-align: left;padding: 0px 30px;">
+        Once the board was generated, the game starts with all the squares lit up in white, to indicate everything
+        as unrevealed. There were two types of presses, a long and short press. These were determined by recording the
+        press time when buttons were pushed down in a dictionary, and calculating the duration when the button was
+        released. A short press would reveal an unrevealed square, and depending on the sum of mines around that
+        unrevealed square, the square would change color to indicate how many mines were around it. For one mine, it
+        was blue, for two it was green, for three it was red, for four it was purple, and for five it was yellow. The
+        square turns off if there are no adjacent mines. If the unrevealed square turned out to be a mine, revealing it
+        would flash all the mines on the board red to indicate that the player lost, while also pausing the time and
+        disabling any further interaction other than resetting the game.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        However, if the player would have revealed a mine on the first try of the whole game, our board regenerated to
+        a different board until it could be guaranteed that the given square was clear. This prevented the player from
+        instantly losing, and thus made our game more enjoyable. We also implemented auto-exploration features like the
+        original game, where if the player revealed a square with no adjacent mines, the adjacent squares were also
+        progressively revealed until a colored number is revealed. This was done with breadth-first search, which
+        provided a cool effect of the clear areas expanding from the touch point until they hit colored grid spaces.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        A longer press flagged a square, and was indicated by a flashing white light. Once a square is flagged, it
+        cannot be uncovered by a short press until it is unflagged by another long press. It is useful for the player
+        to keep track of where all the mines are while playing. Flagging a square also decreased the remaining mine
+        count in the segmented display on the top left of the system. If the player flags too many mines, this number
+        turns negative, to indicate that some of the flagged squares the player thought were mines are not actually
+        mines. The player cannot win until all safe squares are revealed.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        The numeric display in the top right corner of our system displayed the time. If the player uncovered all the
+        squares that didn't contain mines, they won, and their time was added to our leaderboard file along with the
+        difficulty and date achieved. Our PiTFT displayed these best times, filtering through the leaderboard file to
+        only display times from the current difficulty, sorted by lowest times. The first, second, and third place
+        scores were displayed as gold, silver, and bronze, respectively. The leaderboard file persists across reboots
+        and the Python program automatically starts when the system is turned on to provide for an embedded system.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        After winning or losing a game, or if the player wanted to play a new game at any point, they could quick reset
+        the game at the current difficulty using the big red button in the lower right corner. Alternatively, they could
+        also reset the game with the difficulty buttons in case they wanted to play at a different mode. Resetting the
+        game regenerated the board state with the corresponding number of mines, and reset the timer and flag states.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        A new feature added after our final project demo, in preparation for static display, was the replay mode. This
+        addition let the player record their played games into a log of actions taken, which was saved to a file, along
+        with the game difficulty and game seed so the same game board can be regenerated later. Running the same
+        program, the game log can be supplied as an additional argument, which disables interaction and has the Pi
+        autonomously generate the game board and play it over and over again, with the same delays between button
+        presses as the original human player. In replay mode, the new games played by the Pi were not recorded to the
+        leaderboard, which still shows the regular leaderboard content.
+      </p>
+
+      <h3 style="text-align: left;padding: 0px 30px; font-size:20px">Hardware</h3>
       <p style="text-align: left;padding: 0px 30px;"> In order to display the typical grid of Minesweeper, we used four
         4x4 button and LED combination circuit boards from Adafruit. These boards can display any RGB color, and the
         physical buttons are made of durable and transparent silicone. The boards are communicated with via I2C. Each
         board has five unique address changing soldering points that allowed us to use four in combination. This extra
         capacity would also allow us to further expand this project given a larger budget. These boards also have an
         interrupt pin that is used to trigger an interrupt service routine on the Raspberry Pi to ensure a rapid
-        response to any button press.<br><br>
-
-        Displaying the timer and mine counter was handled by two sets of four digit 7-segment display boards from
+        response to any button press.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        Displaying the timer and mine counter was handled by two sets of four digit 14-segment display boards from
         Adafruit. These boards also communicated over I2C, and they had two address changing solder points. These
         displays were wired directly into the same I2C wires as the LED boards resulting in only five wires needing to
-        be connected to the Raspberry Pi: 3V, GND, SDA, SCL, and one interrupt pin from the LED boards.<br><br>
-
+        be connected to the Raspberry Pi: 3V, GND, SDA, SCL, and one interrupt pin from the LED boards.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         The arcade style button used a typical button microswitch given to us by Professor Skovira. This switch was
-        wired to be a default low button in order to use the lowest amount of current.<br><br>
-
+        wired to be a default low button in order to use the lowest amount of current.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         The non-electronic hardware design stemmed largely from our initial concept drawing seen in Figure 1. This
         initial design sketch was made using rough measurements of all the components used, but it was merely an initial
         design idea. As we progressed, the design was segmented into distinct components due to the limitations of 3D
-        printing bed sizes, and the design was also brought into three dimensions to resemble an arcade machine.<br><br>
-
-        The first piece printed was the main body holding the four LED button grids and the two sets of 7-segment
+        printing bed sizes, and the design was also brought into three dimensions to resemble an arcade machine.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
+        The first piece printed was the main body holding the four LED button grids and the two sets of 14-segment
         displays on the top. This piece took five drafts to get to be the perfect shape as the buttons needed just
         enough room to be pressed while also being structurally supportive. This component was also designed to house
-        the 7-segment displays shown at the top of Figure 1. These displays needed to be perfectly flush with the front
+        the 14-segment displays shown at the top of Figure 1. These displays needed to be perfectly flush with the front
         of the display while leaving room behind for their control boards and breakout pins. We also included two
         cylindrical mounting points components that can be seen in the bottom of Figure 2 that the piece holding the
-        PiTFT and arcade style button would later mount to.<br><br>
-
+        PiTFT and arcade style button would later mount to.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         In order to retain the 4x4 LED matrix circuit boards together and in place, we had to design a custom solution.
         The circuit boards needed to be supported from the rear, but there was limited area from which they could be due
         to various resistors and capacitor placements. In order to fully support the LED circuit boards enough to
         withstand constant use from players, we used an I-beam style support that pressed against every corner of the
         circuit boards. We left gaps in the supports along each side of the circuit boards so that wires could be run
-        from the 7-segment displays down to the Raspberry Pi.. We then used a small tab based alignment method to ensure
+        from the 14-segment displays down to the Raspberry Pi.. We then used a small tab based alignment method to ensure
         that the support structure was in the correct position while gluing which can be seen in Figure 3. We also
-        selected the I-beam style support due to its lower plastic volume than a more blocky style.<br><br>
-
+        selected the I-beam style support due to its lower plastic volume than a more blocky style.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         The bottommost part of the hardware design housed the Raspberry Pi, PiTFT, and arcade style button. The PiTFT
         was difficult to constrain in all directions for several reasons. The first was that the premade mounting holes
         are so small that 3D printed parts lack much strength at that size. The second is that the Raspberry Pi and
@@ -194,16 +222,18 @@
         Raspberry Pi and the back of the housing to press the assembly against the front and thus constrain it
         depth-wise. We also had to make some small design modifications to accommodate some pins and pieces of solder on
         the PiTFT that can be seen in Figure 4. At the top of the figure below you can also see the cutout for the
-        wiring between the two main bodies.<br><br>
-
+        wiring between the two main bodies.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         All remaining pieces of the final assembly were aesthetic only. This includes the “Pi Sweeper” name plate seen
         at the top of Figure 5 and the rear piece of the main body. We also printed our names as the structural supports
-        of the two legs, and this can be partially seen below as well.<br><br>
-
+        of the two legs, and this can be partially seen below as well.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         The arcade style button needed to be redesigned to fit within the tight depth constraints of its housing. The
         design was adapted from an open source design by Thingiverse user Wattage2308, and we only modified the inner
         radius of the outermost part to facilitate a more smooth button pressing motion. See the references section for
-        the credited design and download link.<br><br>
+        the credited design and download link.
       </p>
     </div>
 
@@ -214,20 +244,36 @@
     <div style="text-align:center;">
       <h2>Drawings</h2>
       <div style="text-align:center;">
-        <img class="img-rounded" src="pics/sketch.jpg" alt="Generic placeholder image" width="240" height="320">
-        <h4>Figure 1: Initial Design</h4> <br>
-        <img class="img-rounded" src="pics/cad.jpg" alt="Generic placeholder image" width="240" height="320">
-        <h4>Figure 2: Main body showing holes for the buttons and two sets of 7-segment displays.</h4> <br>
-        <img class="img-rounded" src="pics/cadback.jpg" alt="Generic placeholder image" width="260" height="320">
-        <h4>Figure 3: Rear view of the main body with the support structure for the four LED matrix circuit boards
-          shown.</h4><br>
-        <img class="img-rounded" src="pics/cad2.jpg" alt="Generic placeholder image" width="320" height="320">
-        <h4>Figure 4: Rear view of the PiTFT and arcade style button housing showing the four mounting pins, cutout for
-          the Raspberry Pi ports, and cutouts for the PiTFT buttons.</h4><br>
-        <img class="img-rounded" src="pics/testing.jpg" alt="Generic placeholder image" width="250" height="320">
-        <h4>Figure 5: Preliminary testing.</h4><br>
-        <img class="img-rounded" src="pics/secondstep.jpg" alt="Generic placeholder image" width="240" height="320">
-        <h4>Figure 6: Preliminary draft.</h4>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/sketch.jpg" alt="Initial design" width="240">
+          <figcaption>Figure 1: Initial Design</figcaption>
+        </figure>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/cad.jpg" alt="Main body" width="320">
+          <figcaption>Figure 2: Main body showing holes for the buttons and two sets of 14-segment displays.
+          </figcaption>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/cadback.jpg" alt="Rear view of main body" width="320">
+          <figcaption>Figure 3: Rear view of the main body with the support structure for the four LED matrix circuit
+            boards shown.</figcaption>
+        </figure>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/cad2.jpg" alt="Rear view of PiTFT section" width="320">
+          <figcaption>Figure 4: Rear view of the PiTFT and arcade style button housing showing the four mounting pins,
+            cutout for the Raspberry Pi ports, and cutouts for the PiTFT buttons.</figcaption>
+        </figure>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/fig5.png" alt="Front view of full assembly" width="320">
+          <figcaption>Figure 5: Front view of the full assembly.</figcaption>
+        </figure>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/testing.jpg" alt="Preliminary testing" width="320">
+          <figcaption>Figure 6: Preliminary testing.</figcaption>
+        </figure>
+        <figure style="margin-bottom: 30px;">
+          <img class="img-rounded" src="pics/secondstep.jpg" alt="Preliminary draft" width="320">
+          <figcaption>Figure 7: Preliminary draft.</figcaption>
+        </figure>
       </div>
     </div>
 
@@ -235,21 +281,24 @@
 
     <div style="text-align:center;">
       <h2>Testing</h2>
-      <p style="text-align: left;padding: 0px 30px;">When we first received our parts, none of the NeoTrellis LED
-        keypads were connected yet, so we began by testing our board generation on one 4x4 NeoTrellis board. This was a
-        matter of creating a grid as our gameboard, randomly placing a few mines within this grid, and computing the
-        surrounding mines for all the clear squares. This initial setup can be seen in Figure 5. When it came time to
-        add more NeoTrellis boards, it was just a matter of changing the x and y dimensions of our game board, as well
-        as adding the new NeoTrellis board to our array of boards. <br><br>
-
+      <p style="text-align: left;padding: 0px 30px;">
+        When we first received our parts, none of the NeoTrellis LED keypads were connected yet, so we began by testing
+        our board generation on one 4x4 NeoTrellis board. This was a matter of creating a grid as our gameboard,
+        randomly placing a few mines within this grid, and computing the surrounding mines for all the clear squares.
+        This initial setup can be seen in Figure 6. When it came time to add more NeoTrellis boards, it was just a
+        matter of changing the x and y dimensions of our game board, as well as adding the new NeoTrellis board to our
+        array of boards with the right I2C addresses.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         After this first draft, we were able to connect all the NeoTrellis boards, as well as connect the numeric
-        displays. This can be seen in Figure 6. From here, we implemented board clearing, flagging, as well as the flag
-        and time display on the numeric LEDs.<br><br>
-
+        displays. This can be seen in Figure 7. From here, we implemented board clearing, flagging, as well as the flag
+        and time display on the numeric LEDs.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         With all of this done, we added the bottom component of our system, which had the PiTFT and the reset button. We
         implemented how the reset button would implement the game, and how each of the different difficulty buttons on
         the PiTFT would reset the game with its respective. From there, the last part to complete was the leaderboard to
-        be displayed on the PiTFT.
+        be displayed on the PiTFT. After the final demo we also added the replay mode and tested it.
       </p>
 
     </div>
@@ -258,17 +307,20 @@
 
     <div style="text-align:center;">
       <h2>Results and Future Work</h2>
-      <p style="text-align: left;padding: 0px 30px;">The final result of our project was full completion of our
-        objective, and it ended up being a very fun game to play for everyone in the lab. Every component that we
-        purchased behaved exactly as we expected, and integration was smooth due to the ease of I2C on the Raspberry Pi.
-        We ended up slightly changing our chassis design as we went to create a better user experience when playing the
+      <p style="text-align: left;padding: 0px 30px;">
+        The final result of our project was full completion of our objective, and it ended up being a very fun game to
+        play for everyone in the lab, so much that we had people coming over to play it. Every component that we
+        purchased worked without problems, and integration was smooth due to the ease of I2C on the Raspberry Pi. We
+        ended up slightly changing our chassis design as we went to create a better user experience when playing the
         game. The game looked and played as well as we could have hoped despite limitations of only having LEDs as the
-        display. <br><br>
-
+        display.
+      </p>
+      <p style="text-align: left;padding: 0px 30px;">
         In the future, we could expand upon our game to create an even bigger board. Luckily, with the way we developed
-        our code to be modular, adding more boards wouldn’t be difficult. As of right now, our hard difficulty is just a
-        little too difficult, but that is only because it is on an 8x8 grid. In the online version of Minesweeper,
-        different difficulties come with different sized boards.</p>
+        our code to be modular, adding more boards wouldn't be difficult. As of right now, our hard difficulty is just a
+        little too difficult, but that is only because it is on an 8x8 grid. In other versions of Minesweeper,
+        different difficulties come with different sized boards.
+      </p>
     </div>
 
     <hr>
@@ -339,7 +391,8 @@
       <a href="https://learn.adafruit.com/14-segment-alpha-numeric-led-featherwing">Adafruit Alphanumeric LED Display
         Tutorial</a><br>
       <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
-
+      <a href="https://www.thingiverse.com/thing:4500800">Design that our button was based on</a><br>
+      <a href="https://www.jaycar.com.au/spdt-250vac-5a-micro-switch/p/SM1050">Button micro switch used</a><br>
     </div>
 
     <hr>
